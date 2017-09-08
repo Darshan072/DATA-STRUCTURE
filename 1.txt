@@ -1,0 +1,372 @@
+
+c file
+
+
+
+
+
+#include <stdio.h>
+#include<stdlib.h>
+#include<stdbool.h>
+#include"main.h"
+int main()
+{
+int del,ch,val,pos,nval,aval;
+printf("================welcome in circular link list==================\n\n");
+
+node* head=NULL;
+while(ch!=8)
+    {
+    printf("enter your choice\n\n");
+    printf("1.insert first\n");
+    printf("2.insert last\n");
+    printf("3.insert at pos.\n");
+    printf("4.display\n");
+    printf("5.delete first\n");
+    printf("6.delete last\n");
+    printf("7.delete at pos.\n");
+    printf("8.exit\n");
+    scanf("%d",&ch);
+
+            switch (ch)
+            {
+            case 1:
+            printf("enter a value\n");
+            scanf("%d",&val);
+            head=insertfirst(head,val);
+            break;
+
+            case 2:
+            printf("enter a value\n");
+            scanf("%d",&val);
+            head=insertlast(head,val);
+            break;
+
+            case 3:
+            printf("enter a value");
+            scanf("%d",&val);
+            printf("enter a pos");
+            scanf("%d",&pos);
+            head=insertatpos(head,pos,val);
+            break;
+
+           case 4:
+                display(head);
+                printf("\n\n");
+                break;
+
+           case 5:
+
+                head=deletefirst(head);
+                break;
+
+            case 6:
+                head=deletelast(head);
+            break;
+
+            case 7:
+
+            printf("enter a pos");
+            scanf("%d",&pos);
+            head=deleteatpos(head,pos);
+
+            case 8:
+                break;
+
+           default:
+               printf("invalid");
+
+        }
+          continue;
+    }
+}
+
+
+
+
+
+h file
+
+
+
+
+#define max 10
+typedef struct NODE
+{
+    int data;
+    struct node*ptr;
+}node;
+
+node* createnode()
+{
+node* n =(node*)malloc(sizeof(node));
+n->data = NULL;
+n->ptr = NULL;
+return n;
+}
+node* insertfirst(node* head,int val)
+{
+    node* n=createnode();
+    node*tr=head;
+    n->data=val;
+
+    if(head==NULL)
+    {
+        n->ptr=n;
+    }
+    else
+    {
+        n->ptr=head;
+        while(tr->ptr!=head)
+        {
+            tr=tr->ptr;
+        }
+        tr->ptr=n;
+    }
+    head=n;
+    printf("value inserted\n\n\n");
+    return head;
+}
+void display(node*head)
+{
+    node *tr=head;
+    if(head==NULL)
+    {
+        printf("linklist is empty\n\n\n");
+    }
+    else
+    {
+        while(tr->ptr!=head)
+        {
+            printf("%d->",tr->data);
+            tr=tr->ptr;
+        }
+           printf("%d->",tr->data);
+
+    }
+}
+
+
+node* insertlast(node* head,int val)
+{
+     node* n=createnode();
+    node*tr=head;
+    n->data=val;
+
+    if(head==NULL)
+    {
+        n->ptr=n;
+        head=n;
+    }
+    else
+    {
+        n->ptr=head;
+        while(tr->ptr!=head)
+        {
+            tr=tr->ptr;
+        }
+        tr->ptr=n;
+    }
+
+    printf("value inserted\n\n\n");
+    return head;
+
+}
+
+/*node*insertbefore(node*head,int nval,int aval)
+{
+    node*tr=head,*pre=NULL;
+    node*n=createnode();
+    n->data=nval;
+    if(head->data==aval)
+    {
+        n->ptr=head;
+        head=n;
+    }
+    else
+        {
+            while(tr!=NULL&&tr->data!=aval)
+            {
+                pre=tr;
+                tr=tr->ptr;
+            }
+            if(tr==NULL)
+            {
+                printf("no found value\n\n");
+                free(n);
+            }
+            else
+            {
+                n->ptr=tr;
+                pre->ptr=n;
+            }
+        }
+        printf("value inserted\n\n");
+        return head;
+}*/
+node*insertatpos(node*head,int pos,int val)
+{
+    int cnt=1;
+    node*tr=head;
+    node*n=createnode();
+    n->data=val;
+if(pos==1)
+    {
+      head=insertfirst(head,val);
+    }
+    else if(head!=NULL)
+    {
+        while(cnt<(pos-1)&&tr->ptr!=head)
+        {
+            tr=tr->ptr;
+            cnt++;
+        }
+        if(tr->ptr==head)
+        {
+            printf("invalid pos.\n\n");
+            free(n);
+        }
+        else
+        {
+            n->ptr=tr->ptr;
+            tr->ptr=n;
+        }
+    }
+else
+    {
+            printf("link list is empty");
+    }
+return head;
+printf("value inserted\n");
+}
+node*deletefirst(node*head)
+{
+    node*tr=head;
+    node*del=NULL;
+if(head==NULL)
+    {
+        printf("link list is empty");
+    }
+    else if(head->ptr==head)
+    {
+     free(head);
+     head=NULL;
+    }
+    else
+    {
+        del=head;
+        while(tr->ptr!=head)
+        {
+            tr=tr->ptr;
+        }
+        head=head->ptr;
+        tr->ptr=head;
+        free(del);
+    }
+    return head;
+}
+node*deletelast(node*head)
+{
+    node*tr=head;
+    node*pre=NULL;
+    if(head==NULL)
+    {
+        printf("link list is empty");
+    }
+    else if(head->ptr==head)
+    {
+       free(head);
+       head=NULL;
+    }
+    else
+        {
+            while(tr->ptr!=head)
+            {
+                pre=tr;
+                tr=tr->ptr;
+            }
+
+            pre->ptr=head;
+            free(tr);
+        }
+        return head;
+        printf("value deleted");
+}
+
+/*node * deleteafter(node*head,int val)
+{
+    node*tr=head;
+    node*del=NULL;
+    if(head=NULL)
+    {
+        printf("link list is empty");
+    }
+    else
+        {
+            while(tr->data!=val&&tr!=NULL)
+            {
+                tr=tr->ptr;
+            }
+            if(tr==NULL)
+            {
+                printf("value not found");
+            }
+            else
+            {
+                del=tr->ptr;
+                if(del!=NULL)
+                {
+                    tr->ptr=del->ptr;
+                    free(del);
+                }
+                else
+                {
+                    printf("it's last pos.");
+                }
+            }
+        }
+}*/
+node*deleteatpos(node*head,int pos)
+{
+     node*del=NULL;
+    node*tr=head;
+     node*pre=NULL;
+    int cnt=1;
+    if(head==NULL)
+    {
+        printf("link list is empty");
+    }
+    else if(pos==1)
+    {
+        del=head;
+        if(head->ptr==head)
+        {
+            head=NULL;
+        }
+        else
+        {
+            head=head->ptr;
+            free(del);
+        }
+    }
+    else
+    {
+        while(tr->ptr!=head&&cnt<pos)
+        {
+            pre=tr;
+            tr=tr->ptr;
+            cnt++;
+        }
+        if(tr->ptr==head&&cnt!=pos)
+        {
+            printf("..");
+        }
+        else
+        {
+            pre->ptr=tr->ptr;
+            free(tr);
+        }
+    }
+    return head;
+}
+
